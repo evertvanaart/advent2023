@@ -7,11 +7,11 @@ Not in it to win it, but I'll try to comment my code to explain my approach.
 Plain Rust, zero dependencies, no parallel processing.
 
 ```plain
-Usage: cargo run . <task> <input>
+Usage: cargo run --release <task> <input>
  <task>     Day number (two digits) plus part ('a' or 'b')
  <input>    Input file base name, e.g. 'input' or 'sample'
  --profile  Run solution multiple times and compute average duration
-Example: cargo run . 01a sample
+Example: cargo run --release 01a sample
 ```
 
 
