@@ -1,4 +1,4 @@
-pub mod day01 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
+pub mod day01 {     pub mod solve_a;    pub mod solve_b;                    }
 pub mod day02 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
 pub mod day03 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
 pub mod day04 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
