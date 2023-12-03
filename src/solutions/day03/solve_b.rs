@@ -28,8 +28,8 @@ fn compute_gear_ratio(grid: &Grid, star: &(isize, isize)) -> i64 {
 }
 
 fn find_stars(grid: &Grid) -> Vec<(isize, isize)> {
-    grid.content.chars().enumerate()
-        .filter(|(_, ch)| *ch == '*')
+    grid.content.iter().enumerate()
+        .filter(|(_, &ch)| ch == '*')
         .map(|(i, _)| grid.to_coordinates(i as isize)).collect()
 }
 

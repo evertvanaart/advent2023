@@ -15,6 +15,11 @@ use crate::solutions::day03::common::*;
 // the numeric strings felt a bit fiddly; iterating over the symbols is cleaner,
 // and allows for more code reuse with the B part.
 
+// ADDENDUM: Immediately after committing the first solution, I figured out that it
+//   was probably slow because I was storing the grid contents as a string, and getting
+//   the Nth character of a string is an O(N) operation. Sure enough, doing a one-time
+//   conversion from string to vector of `char`s reduced runtime roughly 200 times.
+
 fn is_symbol(c: &char) -> bool { !(c.is_digit(10) || *c == '.') }
 
 fn find_part_numbers(grid: &Grid, symbols: &Vec<(isize, isize)>) -> HashSet<(isize, isize)> {
@@ -31,7 +36,7 @@ fn find_part_numbers(grid: &Grid, symbols: &Vec<(isize, isize)>) -> HashSet<(isi
 }
 
 fn find_symbols(grid: &Grid) -> Vec<(isize, isize)> {
-    grid.content.chars().enumerate()
+    grid.content.iter().enumerate()
         .filter(|(_, ch)| is_symbol(ch))
         .map(|(i, _)| grid.to_coordinates(i as isize)).collect()
 }

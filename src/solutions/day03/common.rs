@@ -3,7 +3,7 @@ const NEIGHBOR_OFFSETS: [(isize, isize); 8] = [(-1, -1), (-1,  0), (-1,  1),
                                                ( 1, -1), ( 1,  0), ( 1,  1)];
 
 pub struct Grid {
-    pub content: String,
+    pub content: Vec<char>,
     pub rows: isize,
     pub cols: isize
 }
@@ -11,14 +11,14 @@ pub struct Grid {
 impl Grid {
     pub fn from_lines(lines: &Vec<String>) -> Grid {
         Grid {
-            content: lines.concat(),
+            content: lines.concat().chars().collect(),
             rows: lines.len() as isize,
             cols: lines.first().unwrap().len() as isize
         }
     }
 
-    pub fn get(&self, c: &(isize, isize)) -> char {
-        self.content.chars().nth((c.0 * self.cols + c.1) as usize).unwrap()
+    pub fn get(&self, c: &(isize, isize)) -> &char {
+        self.content.get((c.0 * self.cols + c.1) as usize).unwrap()
     }
 
     pub fn to_coordinates(&self, i: isize) -> (isize, isize) {
@@ -55,5 +55,6 @@ pub fn parse_number(grid: &Grid, start: &(isize, isize)) -> i64 {
 
     let start_index: usize = grid.to_index(start);
     let end_index: usize = grid.to_index(&number_end);
-    grid.content[start_index .. end_index].parse().unwrap()
+    let numeric_string: String = grid.content[start_index .. end_index].iter().collect();
+    numeric_string.parse().unwrap()
 }
