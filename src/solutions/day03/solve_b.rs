@@ -10,7 +10,7 @@ use crate::solutions::day03::common::*;
 // numbers if and only if there are exactly two. Finding the surrounding numbers
 // is less efficient than it could have been: the conversion to a set in particular
 // is only needed to deal with one specific edge-case (two diagonally adjecent
-// number separate by a period directly above or below the star symbol), and
+// numbers separate by a period directly above or below the star symbol), and
 // explicitly handling this edge case would've been more efficient.
 
 fn compute_gear_ratio(grid: &Grid, star: &(isize, isize)) -> i64 {
