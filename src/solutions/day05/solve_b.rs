@@ -12,7 +12,7 @@ use crate::solutions::day05::common::*;
 // value. Since we only have ten initial seed ranges and seven maps, this is
 // much faster than trying every single seed.
 //
-// The transformation step is somewhat complicated, but essentially we're using
+// The transformation step is somewhat complicated, but essentially we're using a
 // queue (or "queue", since I'm trying to use zero dependencies, and the standard
 // library doesn't include real queues) containing input ranges, initialized using
 // the output of the previous step. For each input range, we try all range functions
