@@ -3,18 +3,12 @@ pub struct Match {
     pub distance: i64,
 }
 
-fn parse_values(line: &String) -> Vec<i64> {
-    line.split_once(':')
-        .unwrap().1.split(' ')
-        .filter(|field| !field.is_empty())
-        .map(|field| field.parse::<i64>().unwrap())
-        .collect()
+fn solve_equation(t: f64, d: f64, sign: f64) -> f64 {
+    (t + sign * (t.powi(2) - 4.0 * (d + 0.5)).sqrt()) / 2.0
 }
 
-pub fn parse_input(lines: &Vec<String>) -> Vec<Match> {
-    let time_values: Vec<i64> = parse_values(&lines[0]);
-    let distance_values: Vec<i64> = parse_values(&lines[1]);
-
-    time_values.into_iter().zip(distance_values)
-        .map(|(time, distance)| Match { time: time, distance: distance }).collect()
+pub fn count_winning_values(m: Match) -> i64 {
+    let min: f64 = solve_equation(m.time as f64, m.distance as f64, -1.0);
+    let max: f64 = solve_equation(m.time as f64, m.distance as f64,  1.0);
+    max.ceil() as i64 - min.ceil() as i64
 }

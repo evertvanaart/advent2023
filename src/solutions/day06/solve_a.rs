@@ -18,14 +18,20 @@ use crate::solutions::day06::common::*;
 // winning range - we simply round them up and compute the difference to get
 // the number of winning integer values.
 
-fn solve_equation(t: f32, d: f32, sign: f32) -> f32 {
-    (t + sign * (t.powi(2) - 4.0 * (d + 0.5)).sqrt()) / 2.0
+fn parse_values(line: &String) -> Vec<i64> {
+    line.split_once(':')
+        .unwrap().1.split(' ')
+        .filter(|field| !field.is_empty())
+        .map(|field| field.parse::<i64>().unwrap())
+        .collect()
 }
 
-fn count_winning_values(m: Match) -> i64 {
-    let min: f32 = solve_equation(m.time as f32, m.distance as f32, -1.0);
-    let max: f32 = solve_equation(m.time as f32, m.distance as f32,  1.0);
-    max.ceil() as i64 - min.ceil() as i64
+fn parse_input(lines: &Vec<String>) -> Vec<Match> {
+    let time_values: Vec<i64> = parse_values(&lines[0]);
+    let distance_values: Vec<i64> = parse_values(&lines[1]);
+
+    time_values.into_iter().zip(distance_values)
+        .map(|(time, distance)| Match { time: time, distance: distance }).collect()
 }
 
 pub fn solve(lines: &Vec<String>) -> Solution {
