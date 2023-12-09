@@ -1,36 +1,21 @@
 use std::collections::HashMap;
 
 use crate::solutions::Solution;
+use crate::solutions::day08::common::*;
 
-enum Direction {
-    Left,
-    Right
-}
+// First create a map of node names to indices, where the index is simply
+// the node's position (zero-based) in the original input. Using this list,
+// create a list of node links, i.e. for each node create a pair of indices
+// indicating the next node index when moving left or right, respectively.
+// Once we've got this list of links, and we've found the start and end
+// nodes, we simply follow the directions from the start node until
+// we've reached the end node, and return the number of steps taken.
 
-fn parse_directions(line: &str) -> Vec<Direction> {
-    line.chars().map(|c| {
-        match c {
-            'L' => Direction::Left,
-            'R' => Direction::Right,
-            _ => panic!()
-        }
-    }).collect()
-}
-
-fn parse_node_names(lines: &[String]) -> HashMap<String, usize> {
-    lines.iter().enumerate()
-        .map(|(index, line)| (String::from(&line[0..3]), index))
-        .collect()
-}
-
-fn parse_node_links(lines: &[String], name_to_index: &HashMap<String, usize>) -> Vec<(usize, usize)> {
-    lines.iter()
-        .map(|line| (&line[7..10], &line[12..15]))
-        .map(|(l, r)| (name_to_index[l], name_to_index[r]))
-        .collect()
-}
-
-fn count_steps(node_links: &Vec<(usize, usize)>, directions: &Vec<Direction>, start_index: usize, end_index: usize) -> i64 {
+fn count_steps(
+    node_links: &Vec<(usize, usize)>,
+    directions: &Vec<Direction>,
+    start_index: usize,
+    end_index: usize) -> i64 {
     let mut current_index: usize = start_index;
     let mut step_count: usize = 0;
 
