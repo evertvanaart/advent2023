@@ -1,25 +1,21 @@
 use std::collections::HashSet;
 
 use crate::solutions::Solution;
+use crate::solutions::day18::common::*;
 
-enum Direction {
-    North,
-    East,
-    South,
-    West
-}
+// A naive solution, but it works. I've verified retroactively that the solution
+// of the B part also works for the A part, but given the limited ranges of the
+// A part, this naive approach is fast enough. We dig out the loop according to
+// the instructions, keeping the coordinates of all excavated tiles in a set.
+// In addition, we track the tiles to the left and to the right of the path in
+// a separate set. Once we've completed the loop, we determine which of these
+// two "side" sets is on the inside, which is easily done by checking which one
+// contains only coordinates inside the loop bounds (which we also tracked as we
+// were digging the loop). We then grow the inside area from these initial inside
+// tiles, i.e. we keep iteratively adding their neighbors to the excavated area
+// until we encounter no more new tiles.
 
-impl Direction {
-    fn parse(input: &str) -> Direction {
-        match input {
-            "R" => Direction::East,
-            "L" => Direction::West,
-            "U" => Direction::North,
-            "D" => Direction::South,
-            _ => panic!()
-        }
-    }
-}
+/* ------------------------------- Instruction ------------------------------ */
 
 struct Instruction {
     dir: Direction,
@@ -29,7 +25,7 @@ struct Instruction {
 impl Instruction {
     fn parse(line: &str) -> Instruction {
         let fields: Vec<&str> = line.split(' ').collect();
-        let dir: Direction = Direction::parse(fields[0]);
+        let dir: Direction = Direction::parse_a(fields[0]);
         let count: usize = fields[1].parse().unwrap();
         Instruction { dir, count }
     }
@@ -41,6 +37,8 @@ impl Instruction {
         }
     }
 }
+
+/* --------------------------------- Digger --------------------------------- */
 
 struct Digger {
     pos: (isize, isize),
@@ -90,6 +88,8 @@ impl Digger {
         }
     }
 }
+
+/* --------------------------------- DugArea -------------------------------- */
 
 struct DugArea {
     tiles: HashSet<(isize, isize)>,
@@ -145,6 +145,8 @@ impl DugArea {
         pos.0 >= self.min_row && pos.0 <= self.max_row && pos.1 >= self.min_col && pos.1 <= self.max_col
     }
 }
+
+/* ---------------------------------- Main ---------------------------------- */
 
 pub fn solve(lines: &Vec<String>) -> Solution {
     let instructions: Vec<Instruction> = lines.iter()
