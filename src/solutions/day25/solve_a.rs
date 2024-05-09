@@ -3,6 +3,30 @@ use std::collections::HashSet;
 
 use crate::solutions::Solution;
 
+// A slightly simplified version of the Kernighan–Lin algorithm. After parsing
+// the graph, we create an initial partition by picking an arbitrary node, and
+// doing a breadth-first expansion until we've reached roughly 50% of the nodes;
+// the nodes inside this expansion are assigned to one group, and the remaining
+// nodes are assigned to a second group (called groups A and B below).
+//
+// We then calculate the internal and external costs for each node. The internal
+// cost is the number of neighboring nodes that are in the same group as the
+// current node, the external cost is the number of neighboring nodes in the
+// other group. We also calculate the difference between these two costs.
+//
+// We then perform a series of optimization steps. In each step, we find the
+// node with the highest cost difference, and swap its group. After updating
+// the cost values of this node and its neighbors accordingly, we check if the
+// total cost of the graph is equal to three, in which case we've found our
+// optimal partition, and can simply multiply the sizes of the two groups.
+//
+// I wasn't sure if this would always work, or if the algorithm might get stuck
+// in an local optimum. Just in case, I added a clause where the whole solution
+// is retried (relying on the sets used during parsing to select a different
+// starting node) in case there's no possible improvement and the total cost
+// is still more than three. This clause doesn't get used in practice however,
+// so it's possible that we will always reach the optimal partition.
+
 /* ---------------------------------- Group --------------------------------- */
 
 #[derive(PartialEq, Copy, Clone)]
@@ -68,7 +92,7 @@ impl Graph {
                 .map(|to_str| Self::get_node_id(&mut node_map, to_str))
                 .for_each(|to_id| Self::add_links(&mut graph_map, from_id, to_id));
         }
-    
+
         let mut graph: Graph = Graph::new();
     
         for node_id in 0 .. graph_map.len() {
@@ -165,10 +189,15 @@ fn step(graph: &mut Graph) -> bool {
         return false;
     }
 
-    let current_group: Group = graph.nodes[target_node_id].group;
-    graph.nodes[target_node_id].group = current_group.other();
-    graph.cost -= graph.nodes[target_node_id].cost_diff;
+    let target_node: &mut Node = &mut graph.nodes[target_node_id];
+    let current_group: Group = target_node.group;
+    graph.cost -= target_node.cost_diff;
 
+    target_node.group = current_group.other();
+    target_node.external_cost = target_node.internal_cost;
+    target_node.internal_cost = target_node.to.len() as isize - target_node.internal_cost;
+    target_node.cost_diff = target_node.external_cost - target_node.internal_cost;
+    
     for to_node_id in graph.nodes[target_node_id].to.clone() {
         let to_node: &mut Node = &mut graph.nodes[to_node_id];
 
@@ -213,3 +242,5 @@ pub fn solve(lines: &Vec<String>) -> Solution {
         }
     }
 }
+
+// 543906 too high

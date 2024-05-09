@@ -22,7 +22,7 @@ pub mod day21 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
 pub mod day22 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
 pub mod day23 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
 pub mod day24 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
-pub mod day25 {     pub mod solve_a;    pub mod solve_b;    mod common;     }
+pub mod day25 {     pub mod solve_a;                                        }
 
 /* -------------------------------- Solution -------------------------------- */
 
@@ -117,7 +117,6 @@ pub fn get_solver(task: &str) -> Solver {
         "24b" => day24::solve_b::solve,
 
         "25a" => day25::solve_a::solve,
-        "25b" => day25::solve_b::solve,
 
         _ => panic!("Invalid task '{task}'")
     }
