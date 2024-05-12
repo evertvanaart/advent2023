@@ -46,3 +46,5 @@ The table below shows the average core runtime of each solution, recorded over a
 |  23  |      2,538  |    933,603  |
 |  24  |        964  |        DNF  |
 |  25  |      1,188  |        ---  |
+
+Only one question runs in more than a second (day 17, finding the optimal path for the crucibles), although the second part of day 23 (finding the longest path through the maze) comes close. Other than that, I decided to skip two sub-questions, the second part of day 21 (finding the number of possible positions after X steps in a looping grid), and the second part of day 24 (computing the position and velocity of a rock that will hit all hailstones). 
