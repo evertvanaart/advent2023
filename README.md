@@ -44,5 +44,5 @@ The table below shows the average core runtime of each solution, recorded over a
 |  21  |             |             |
 |  22  |        624  |    133,114  |
 |  23  |      2,538  |    933,603  |
-|  24  |             |             |
+|  24  |        964  |        DNF  |
 |  25  |      1,188  |        ---  |
